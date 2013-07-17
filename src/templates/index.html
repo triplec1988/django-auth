@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+    <h1>Welcome to Django-Auth!<h1>
+    <a href="{% url 'foursq_auth' %}"><img src="{{ STATIC_URL }}/images/foursquare.png" /></a>
+    <a href="{% url 'insta_auth' %}"><img src="{{ STATIC_URL }}/images/instagram.png" /></a>
+</div>
+{% endblock %}

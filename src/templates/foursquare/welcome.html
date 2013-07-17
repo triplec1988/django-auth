@@ -3,6 +3,6 @@
 {% block title %}Welcome{% endblock %}
 
 {% block body %}
-<p>Hi {{ user.first_name }}, you've successfully logged in! </p>
-    <a href="{% url 'foursq_unauth' %}">Logout</a>
+<h2>Hi {{ user.first_name }}, you've successfully logged in! </h2>
+<a class="btn btn-auth" href="{% url 'foursq_unauth' %}">Logout</a>
 {% endblock %}

@@ -4,7 +4,6 @@ from foursquare import views
 
 urlpatterns = patterns('',
     # Foursquare Authentication
-    url(r'^$', views.foursq_main, name='foursq_main'),
     url(r'^callback/$', views.foursq_callback, name='foursq_callback'),
     url(r'^logout/$', views.foursq_unauth, name='foursq_unauth'),
     url(r'^auth/$', views.foursq_auth, name='foursq_auth'),
