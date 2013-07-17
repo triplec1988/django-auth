@@ -3,6 +3,6 @@
 {% block title %}Welcome{% endblock %}
 
 {% block body %}
-<p>Hi {{ user.username }}, you've successfully logged in! </p>
-    <a href="{% url 'insta_unauth' %}">Logout</a>
+<h2>Hi {{ user.username }}, you've successfully logged in! </h2>
+    <a class="btn btn-auth" href="{% url 'insta_unauth' %}">Logout</a>
 {% endblock %}

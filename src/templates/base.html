@@ -36,13 +36,9 @@
         <div class="container-fluid">
           {% block navbar-buttons %}
             {% if user.is_authenticated %}
-                {% if perms.List.can_delete_list %}
                 <a class="brand" href="#"><span class='pre'>Django</span><span class='post'>Auth</span></a>
-                {% else %}
-                {% block logo %}<div class="brand"><span class='pre'>Django</span><span class='post'>Auth</span></div>{% endblock logo %}
-                {% endif %}
             {% else %}
-            <a class="brand" href="#"><span class='pre'>Django</span><span class='post'>Auth</span></a>
+                <a class="brand" href="{% url 'index' %}"><span class='pre'>Django</span><span class='post'>Auth</span></a>
             {% endif %}
           {% endblock navbar-buttons %}
             <ul class="nav pull-right">
@@ -62,7 +58,7 @@
                             </li>
                             <li><a class="navbar-link" href="#">
                                 Change Password</a></li>
-                            <li><a class="navbar-link" href="#">
+                            <li><a class="navbar-link" href="">
                                 Logout</a></li>
                         </ul>
                     </li>
@@ -87,7 +83,17 @@
       <hr>
 
       <footer>
-        <p>&copy; Chris Clouten</p>
+        <div class="row-fluid">
+            <div class="span10">
+                <p>&copy; Chris Clouten, 2013</p>
+            </div>
+            <div class="span1">
+                <p><a href="{% url 'about' %}">About</a></p>
+            </div>
+            <div class="span1">
+                <p><a href="{% url 'contact' %}">Contact</a></p>
+            </div>
+        </div>
       </footer>
 
     </div><!--/.fluid-container-->
