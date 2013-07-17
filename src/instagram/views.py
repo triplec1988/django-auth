@@ -18,10 +18,6 @@ from src.settings import INS_CLIENT_ID, INS_CLIENT_SECRET, INS_ACCESS_TOKEN_URL,
 #############################
 
 
-def insta_main(request):
-    return TemplateResponse(request, 'instagram/login.html')
-
-
 def insta_auth(request):
     # build the url to request
     params = {'client_id': INS_CLIENT_ID,
@@ -110,4 +106,4 @@ def insta_unauth(request):
     # clear any tokens and logout
     request.session.clear()
     logout(request)
-    return redirect(reverse('insta_main'))
+    return redirect(reverse('index'))

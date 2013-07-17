@@ -19,10 +19,6 @@ from src.settings import FSQ_CLIENT_ID, FSQ_CLIENT_SECRET, FSQ_ACCESS_TOKEN_URL,
 ##############################
 
 
-def foursq_main(request):
-    return TemplateResponse(request, 'foursquare/login.html')
-
-
 def foursq_auth(request):
     # build the url to request
     params = {'client_id': FSQ_CLIENT_ID,
@@ -105,4 +101,4 @@ def foursq_unauth(request):
     # clear any tokens and logout
     request.session.clear()
     logout(request)
-    return redirect(reverse('foursq_main'))
+    return redirect(reverse('index'))
