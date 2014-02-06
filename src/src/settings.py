@@ -198,3 +198,13 @@ INS_REDIRECT_URL = 'http://127.0.0.1:8000/instagram/callback'
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
                            'foursquare.backends.FoursquareBackend',
                            'instagram.backends.InstagramBackend',)
+
+MANDRILL_API_KEY = 'eLWGN3sKZFs78zGiTynCIg'
+
+EMAIL_HOST = 'smtp.mandrillapp.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'triplec1988@gmail.com'
+EMAIL_HOST_PASSWORD = MANDRILL_API_KEY
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'triplec1988@gmail.com'
