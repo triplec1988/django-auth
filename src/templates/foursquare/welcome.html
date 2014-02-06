@@ -4,5 +4,5 @@
 
 {% block body %}
 <h2>Hi {{ user.first_name }}, you've successfully logged in! </h2>
-<a class="btn btn-auth" href="{% url 'foursq_unauth' %}">Logout</a>
+<a class="btn btn-default foursquare" href="{% url 'foursq_unauth' %}"><span class="ss-foursquare social-icon">Logout!</a>
 {% endblock %}

@@ -4,8 +4,195 @@
 
 {% block body %}
 <div class="row-fluid">
-    <h1>Welcome to Django-Auth!<h1>
-    <a href="{% url 'foursq_auth' %}"><img src="{{ STATIC_URL }}/images/foursquare.png" /></a>
-    <a href="{% url 'insta_auth' %}"><img src="{{ STATIC_URL }}/images/instagram.png" /></a>
+    <h1 class="megrim">Welcome to Django-Auth!<h1>
+    <a href="{% url 'foursq_auth' %}"><button type="button" class="btn btn-default foursquare"><span class="ss-foursquare social-icon"></span>Log In With Foursquare!</button></a>
+    <a href="{% url 'insta_auth' %}"><button type="button" class="btn btn-default instagram"><span class="ss-instagram social-icon"></span>Log In With Instagram!</button></a>
+    <a href="https://github.com/triplec1988/django-auth"><button type="button" class="btn btn-default github"><span class="ss-octocat social-icon"></span>View GitHub Codebase!</button></a>
+    <h3 class="raleway">Custom Django backend and OAuth2 authentication example</h3>
+    <p>Authenticating users using OAuth2 protocol is both simple for users and secure for application developers. Django, like many frameworks, makes it easy to build user-centric applications. Using third parties like Foursquare or Instagram to authenticate users can be done by installing large third party Django plugins. However, these plugins contain way more code than the average developer could ever need for authenticating users. This tutorial will show you how easy it is to add the functionality of third party authentication without the hassle of using a bloated third party plugin.</p>
+
+    <h1 class="megrim">Step #1: Register Application</h1>
+    <p>Register your application with the service you wish to use for your OAuth2 user authentication (e.g. https://developer.foursquare.com/ -- the rest of this example will use Foursquare). Here you'll obtain your client_id and client_secret, as well as set your redirect_uri.</p>
+
+    <h1 class="megrim">Step #2: settings.py</h1>
+    <p>Add your Foursquare client_id, client_secret, and redirect_uri to settings.py. Additionally, add variables for the access_token_url and authorization_url. Finally, you need to set your AUTHENTICATION_BACKENDS in your Django settings. This will be important in a later step when you create a custom authentication backend.</p>
+    <pre>
+        <code>
+
+FSQ_CLIENT_ID = 'YOUR_CLIENT_ID'
+FSQ_CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
+FSQ_ACCESS_TOKEN_URL = 'https://foursquare.com/oauth2/access_token'
+FSQ_AUTHORIZE_URL = 'https://foursquare.com/oauth2/authenticate'
+FSQ_REDIRECT_URL = 'YOUR_REDIRECT_URL'
+
+
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                           'YOUR_APP.backends.FoursquareBackend',)
+        </code>
+    </pre>
+
+    <h1 class="megrim">Step #3: urls.py</h1>
+    <p>Set up your urls.py file for the Foursquare authentication process. You can name your URLs whatever you want. </p>
+    <pre>
+        <code>
+from django.conf.urls import patterns, url
+ 
+from YOUR_APP import views
+ 
+urlpatterns = patterns('',
+    # Main is where you'll have a button to login via Foursquare
+    url(r'^foursquare/$', views.foursq_main, name='foursq_main'),
+    # This is your callback URL
+    url(r'^foursquare/callback/$', views.foursq_callback, name='foursq_callback'),
+    # This is the user logout URL
+    url(r'^foursquare/logout/$', views.foursq_unauth, name='foursq_unauth'),
+    # This URL calls the Foursquare authentication process
+    url(r'^foursquare/auth/$', views.foursq_auth, name='foursq_auth'),
+    # This URL saves the user in auth_user, authenticates and logs them in
+    url(r'^foursquare/done/$', views.foursq_done, name='foursq_done'),
+    # This URL is the welcome page after a user has been logged in successfully
+    url(r'^foursquare/welcome/$', views.foursq_welcome, name='foursq_welcome'),
+)
+        </code>
+    </pre>
+
+    <h1 class="megrim">Step #4: views.py</h1>
+    <p>Set up your views.py. Only two of these views return a template response, while the rest handle the logic in requesting an access_token from Foursquare and using it to access the user via the Foursquare API to pull in data and save them as a Django user. The authenticate() method in foursq_done is part of the custom Foursquare authentication backend, which will be covered shortly.</p>
+    <pre>
+        <code>
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+from django.template.response import TemplateResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import *
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from datetime import datetime
+
+import urllib
+import urllib2
+import json
+
+from models import FoursqProfile
+from src.settings import FSQ_CLIENT_ID, FSQ_CLIENT_SECRET, FSQ_ACCESS_TOKEN_URL, FSQ_AUTHORIZE_URL, FSQ_REDIRECT_URL
+
+def foursq_auth(request):
+    # build the url to request
+    params = {'client_id': FSQ_CLIENT_ID,
+              'response_type': 'code',
+              'redirect_uri': FSQ_REDIRECT_URL}
+    data = urllib.urlencode(params)
+    # redirect the user to the url to confirm access for the app
+    return redirect('%s?%s' % (FSQ_AUTHORIZE_URL, data))
+
+
+def foursq_callback(request):
+    # get the code returned from foursquare
+    code = request.GET.get('code')
+
+    # build the url to request the access_token
+    params = {'client_id': FSQ_CLIENT_ID,
+              'client_secret': FSQ_CLIENT_SECRET,
+              'grant_type': 'authorization_code',
+              'redirect_uri': FSQ_REDIRECT_URL,
+              'code': code}
+    data = urllib.urlencode(params)
+    req = urllib2.Request(FSQ_ACCESS_TOKEN_URL, data)
+
+    # request the access_token
+    response = urllib2.urlopen(req)
+    access_token = json.loads(response.read())
+    access_token = access_token['access_token']
+
+    # store the access_token for later use
+    request.session['access_token'] = access_token
+
+    # redirect the user to show we're done
+    return redirect(reverse('foursq_done'))
+
+
+def foursq_done(request):
+    # get the access_token
+    access_token = request.session.get('access_token')
+
+    # request user details from foursquare
+    time = datetime.date(datetime.today()).strftime('%Y%m%d')
+    params = {'oauth_token': access_token, 'v': time}
+    data = urllib.urlencode(params)
+    url = 'https://api.foursquare.com/v2/users/self'
+    full_url = url + '?' + data
+    response = urllib2.urlopen(full_url)
+    response = response.read()
+    user_data = json.loads(response)['response']['user']
+
+    try:
+        user = User.objects.get(username=user_data['contact']['email'])
+    except User.DoesNotExist:
+        # Save information on user
+        user = User(username=user_data['contact']['email'],
+                    first_name=user_data['firstName'], last_name=user_data['lastName'],
+                    email=user_data['contact']['email'])
+        user.set_password(access_token)
+        user.save()
+        profile = FoursqProfile()
+        profile.user = user
+        profile.oauth_token = access_token
+        profile.save()
+
+    user = authenticate(username=user.username, password=user.password)
+
+    login(request, user)
+
+    # show the page with the user's name to show they've logged in
+    return redirect(reverse('foursq_welcome'))
+
+
+@login_required
+def foursq_welcome(request):
+    user = request.user
+    print user.first_name
+
+    return TemplateResponse(request, 'foursquare/welcome.html', {'user': user})
+
+
+def foursq_unauth(request):
+    # clear any tokens and logout
+    request.session.clear()
+    logout(request)
+    return redirect(reverse('index'))
+
+        </code>
+    </pre>
+
+    <h1 class="megrim">Step #5: Templates</h1>
+    <p>Set up your templates. In this case you really only need two templates, and the ones I have below are super basic and extend a base.html. Expand and prettify your templates as you wish, the key here is that one logs a user in and the other displays the user's name after they login and allows them to logout.</p>
+    
+    <h1 class="megrim">Step #6: backends.py</h1>
+    <p>Finally, you need to create a custom backend for Foursquare authentication. This is essentially a custom authentication method that Django will look at (since it's listed in your settings) after you create a user and try to authenticate them in the foursq_done view. The default backend that Django uses to authenticate users in the core Django user creation process is the ModelBackend. Since you're creating users differently here, this backend cannot authenticate your new Foursquare user so a custom Foursquare backend will contain an authenticate() method to do just that.</p>
+    <pre>
+        <code>
+from django.contrib.auth.models import User
+from django.contrib.auth.backends import ModelBackend
+ 
+ 
+class FoursquareBackend(ModelBackend):
+    def authenticate(self, username=None, password=None):
+        try:
+            user = User.objects.get(username=username)
+            return user
+        except User.DoesNotExist:
+            print "Looks like this user does not exist"
+        return None
+ 
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+        </code>
+    </pre>
+
+    <h1 class="megrim">Conclusions</h1>
+    <p>After setting up these files accordingly your Foursquare authentication and user creation process for Django should be working correctly! Make sure your Django server is running and test it out.</p>
 </div>
 {% endblock %}
