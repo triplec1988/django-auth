@@ -21,8 +21,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'djangoAuth',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'djangoAuth',
-        'PASSWORD': 'Auth123!',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
@@ -88,7 +88,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '(a_8@28u&amp;jobvr93=swu$)k3m74k#p=g04l%2*1ji4wqv-mn4q'
+SECRET_KEY = ''
 
 # List of callables that know how to import templates from various sources.
 #TEMPLATE_LOADERS = (
@@ -178,8 +178,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
  #####     FOURSQUARE     #####
 ##############################
 
-FSQ_CLIENT_ID = 'Z4VOEVMZJPO0OILZPF0VR3EYCKGHDUS3K02MX1J41DV3A3R3'
-FSQ_CLIENT_SECRET = '4OK2ZUXAO2VEZ5Z1NIX4KP0Q1RFGGVRZLIFANKZWE3O40VSU'
+FSQ_CLIENT_ID = ''
+FSQ_CLIENT_SECRET = ''
 FSQ_ACCESS_TOKEN_URL = 'https://foursquare.com/oauth2/access_token'
 FSQ_AUTHORIZE_URL = 'https://foursquare.com/oauth2/authenticate'
 FSQ_REDIRECT_URL = 'http://djangoauth.thecloutenproject.com/foursquare/callback'
@@ -188,8 +188,8 @@ FSQ_REDIRECT_URL = 'http://djangoauth.thecloutenproject.com/foursquare/callback'
  #####     Instagram     #####
 #############################
 
-INS_CLIENT_ID = 'a089f604f94e49788c1d001ac1b270f3'
-INS_CLIENT_SECRET = 'a9c663584e974badb8109e088ae8004c'
+INS_CLIENT_ID = ''
+INS_CLIENT_SECRET = ''
 INS_ACCESS_TOKEN_URL = 'https://api.instagram.com/oauth/access_token'
 INS_AUTHORIZE_URL = 'https://api.instagram.com/oauth/authorize/'
 INS_REDIRECT_URL = 'http://djangoauth.thecloutenproject.com/instagram/callback'
@@ -199,7 +199,7 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
                            'foursquare.backends.FoursquareBackend',
                            'instagram.backends.InstagramBackend',)
 
-MANDRILL_API_KEY = 'eLWGN3sKZFs78zGiTynCIg'
+MANDRILL_API_KEY = ''
 
 EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = '587'
