@@ -18,11 +18,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'auth',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'djangoAuth',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'djangoAuth',
+        'PASSWORD': 'Auth123!',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
@@ -182,7 +182,7 @@ FSQ_CLIENT_ID = 'Z4VOEVMZJPO0OILZPF0VR3EYCKGHDUS3K02MX1J41DV3A3R3'
 FSQ_CLIENT_SECRET = '4OK2ZUXAO2VEZ5Z1NIX4KP0Q1RFGGVRZLIFANKZWE3O40VSU'
 FSQ_ACCESS_TOKEN_URL = 'https://foursquare.com/oauth2/access_token'
 FSQ_AUTHORIZE_URL = 'https://foursquare.com/oauth2/authenticate'
-FSQ_REDIRECT_URL = 'http://127.0.0.1:8000/foursquare/callback'
+FSQ_REDIRECT_URL = 'http://djangoauth.thecloutenproject.com/foursquare/callback'
 
   #############################
  #####     Instagram     #####
@@ -192,7 +192,7 @@ INS_CLIENT_ID = 'a089f604f94e49788c1d001ac1b270f3'
 INS_CLIENT_SECRET = 'a9c663584e974badb8109e088ae8004c'
 INS_ACCESS_TOKEN_URL = 'https://api.instagram.com/oauth/access_token'
 INS_AUTHORIZE_URL = 'https://api.instagram.com/oauth/authorize/'
-INS_REDIRECT_URL = 'http://127.0.0.1:8000/instagram/callback'
+INS_REDIRECT_URL = 'http://djangoauth.thecloutenproject.com/instagram/callback'
 
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
