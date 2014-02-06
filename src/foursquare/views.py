@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from datetime import datetime
 
 import urllib
 import urllib2
@@ -59,7 +60,8 @@ def foursq_done(request):
     access_token = request.session.get('access_token')
 
     # request user details from foursquare
-    params = {'oauth_token': access_token}
+    time = datetime.date(datetime.today()).strftime('%Y%m%d')
+    params = {'oauth_token': access_token, 'v': time}
     data = urllib.urlencode(params)
     url = 'https://api.foursquare.com/v2/users/self'
     full_url = url + '?' + data
