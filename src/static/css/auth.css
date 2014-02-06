@@ -1,47 +1,29 @@
-/* Custom Stylesheet for SFU */
-
-.list_count {
-	margin: 25px 0 0 0;
-}
-.list_btn {
-	margin: 20px 0 0 0;
-}
-.pre {
-	color:#9B59B6;
-	font-weight: 700;
-}
-.post{
-	color: #F1C40F;
-	font-weight: 200;
-}
-.settings-edit {
-	color: #9B59B6 !important;
-}
-.settings-edit:hover{
-	color: #F1C40F !important;
-}
-.edit {
-	color: #9B59B6;
-}
-.edit:hover {
-	color: #F1C40F;
-}
-.btn-sfu {
-	background-color: #9B59B6 !important;
-}
-.btn-sfu:hover {
-	background-color: #F1C40F !important;
-}
-.edit-buttons{
-	margin: 10px 0 10px 145px;
-}
-.login-buttons{
-	margin: 30px 0 10px 185px;
-}
-.example{
-	margin: 0 0 0 25px;
-}
 a:link {text-decoration: none;}
 a:visited {text-decoration: none;}
 a:active {text-decoration: none;}
 a:hover {text-decoration: none;}
+
+/* NEW STYLES */
+.megrim {
+	font-family: "Megrim" !important;
+}
+body {
+	font-family: "Raleway" !important;
+}
+.social-icon {
+	position: relative;
+	top: 2px;
+	margin-right: 5px;
+}
+.foursquare:hover {
+	background-color: #0cbadf;
+}
+.instagram:hover {
+	background-color: #3f729b;
+}
+.github:hover {
+	background-color: #d6e685;
+}
+.nav a:hover, .navbar-brand:hover {
+	color: #8cc665 !important;
+}

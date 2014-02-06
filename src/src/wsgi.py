@@ -14,8 +14,15 @@ framework.
 
 """
 import os
+import sys
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.settings")
+path = '/home/chris/public/djangoAuth/public/django-auth/src'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['PYTHON_EGG_CACHE'] = '/home/chris/public/djangoAuth/public/django-auth/.python-egg'
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'src.settings'
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION

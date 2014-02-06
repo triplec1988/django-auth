@@ -12,10 +12,6 @@ def index(request):
     return TemplateResponse(request, 'index.html')
 
 
-def about(request):
-    return TemplateResponse(request, "about.html")
-
-
 def contact(request):
     if request.method == 'POST':
         form = forms.ContactForm(request.POST)
