@@ -88,7 +88,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
+SECRET_KEY = '(a_8@28u&amp;jobvr93=swu$)k3m74k#p=g04l%2*1ji4wqv-mn4q'
 
 # List of callables that know how to import templates from various sources.
 #TEMPLATE_LOADERS = (
@@ -199,7 +199,7 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
                            'foursquare.backends.FoursquareBackend',
                            'instagram.backends.InstagramBackend',)
 
-MANDRILL_API_KEY = ''
+MANDRILL_API_KEY = 'eLWGN3sKZFs78zGiTynCIg'
 
 EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = '587'
