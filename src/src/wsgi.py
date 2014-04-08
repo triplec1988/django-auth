@@ -13,6 +13,11 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
+# Import New Relic's ini
+import newrelic.agent
+newrelic.agent.initialize('/home/chris/public/djangoAuth/public/django-auth/newrelic.ini')
+
+# Setup env path and variables
 import os
 import sys
 
@@ -29,6 +34,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'src.settings'
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+application = newrelic.agent.WSGIApplicationWrapper(application)
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
